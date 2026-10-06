@@ -25,10 +25,9 @@ jobs:
       - name: Get dependencies
         run: flutter pub get
 
-      - name: Fix Android Gradle Settings
+      - name: Recreate Android Files
         run: |
-          mkdir -p android/app
-          flutter pub run flutter_launcher_icons:main || true
+          flutter create . --platforms=android --org com.auraname.app
 
       - name: Build APK
         run: flutter build apk --release
