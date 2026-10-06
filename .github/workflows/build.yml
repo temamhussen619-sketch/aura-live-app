@@ -25,6 +25,11 @@ jobs:
       - name: Get dependencies
         run: flutter pub get
 
+      - name: Fix Android Gradle Settings
+        run: |
+          mkdir -p android/app
+          flutter pub run flutter_launcher_icons:main || true
+
       - name: Build APK
         run: flutter build apk --release
 
