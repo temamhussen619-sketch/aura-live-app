@@ -27,7 +27,7 @@ jobs:
 
       - name: Recreate Android Files
         run: |
-          flutter create . --platforms=android --org com.auraname.app
+          flutter create . --platforms=android --project-name=aura_live_app --org com.auraname.app
 
       - name: Build APK
         run: flutter build apk --release
