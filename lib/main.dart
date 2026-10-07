@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'widgets/host_tools_sheet.dart';
+import 'widgets/wishlist_lucky_draw_sheet.dart';
+import 'widgets/store_vip_sheet.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -94,15 +97,20 @@ class _LiveRoomScreenState extends State<LiveRoomScreen> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                _buildToolIcon(Icons.admin_panel_settings, 'Admins', () {}),
-                _buildToolIcon(Icons.card_giftcard, 'Store', () {
-                  _showStoreBottomSheet(context);
+                _buildToolIcon(Icons.card_giftcard, 'Wishlist', () {
+                  _showCustomWishlist(context);
+                }),
+                _buildToolIcon(Icons.monetization_on, 'Lucky Draw', () {
+                  _showLuckyDraw(context);
+                }),
+                _buildToolIcon(Icons.store, 'Store', () {
+                  _showStore(context);
                 }),
                 _buildToolIcon(Icons.diamond, 'VIP', () {
-                  _showVipBottomSheet(context);
+                  _showVip(context);
                 }),
                 _buildToolIcon(Icons.handyman, 'Host Tools', () {
-                  _showHostToolsBottomSheet(context);
+                  _showHostTools(context);
                 }),
               ],
             ),
@@ -134,65 +142,48 @@ class _LiveRoomScreenState extends State<LiveRoomScreen> {
     );
   }
 
-  void _showHostToolsBottomSheet(BuildContext context) {
+  void _showHostTools(BuildContext context) {
     showModalBottomSheet(
       context: context,
-      backgroundColor: const Color(0xFF1E1E1E),
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-      ),
-      builder: (context) {
-        return Container(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: const [
-              Text('Host Tools', style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
-              SizedBox(height: 16),
-              ListTile(
-                leading: Icon(Icons.security, color: Colors.amber),
-                title: Text('Screen Recording Restriction', style: TextStyle(color: Colors.white)),
-                subtitle: Text('Prevent audience from recording screen', style: TextStyle(color: Colors.grey, fontSize: 12)),
-              ),
-              ListTile(
-                leading: Icon(Icons.info, color: Colors.amber),
-                title: Text('Live Stream Introduction', style: TextStyle(color: Colors.white)),
-              ),
-              ListTile(
-                leading: Icon(Icons.face, color: Colors.amber),
-                title: Text('Beauty & Material Filters', style: TextStyle(color: Colors.white)),
-              ),
-            ],
-          ),
-        );
-      },
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (context) => const HostToolsSheet(),
     );
   }
 
-  void _showStoreBottomSheet(BuildContext context) {
+  void _showCustomWishlist(BuildContext context) {
     showModalBottomSheet(
       context: context,
-      backgroundColor: const Color(0xFF1E1E1E),
-      builder: (context) {
-        return Container(
-          padding: const EdgeInsets.all(16),
-          child: const Text('Store: Popular, Honor, Rare ID, Ride, Avatar Frames', style: TextStyle(color: Colors.white, fontSize: 16)),
-        );
-      },
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (context) => const CustomWishlistSheet(),
     );
   }
 
-  void _showVipBottomSheet(BuildContext context) {
+  void _showLuckyDraw(BuildContext context) {
     showModalBottomSheet(
       context: context,
-      backgroundColor: const Color(0xFF1E1E1E),
-      builder: (context) {
-        return Container(
-          padding: const EdgeInsets.all(16),
-          child: const Text('VIP Tiers: Normal VIP, Super VIP, Diamond VIP, SVIP', style: TextStyle(color: Colors.white, fontSize: 16)),
-        );
-      },
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (context) => const LuckyDrawSheet(),
+    );
+  }
+
+  void _showStore(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (context) => const StoreBottomSheet(),
+    );
+  }
+
+  void _showVip(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (context) => const VipBottomSheet(),
     );
   }
 }
