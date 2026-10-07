@@ -20,6 +20,7 @@ class AuraLiveApp extends StatelessWidget {
   }
 }
 
+// 1. መጀመሪያ የሚከፈተው የሎጊን ገጽ (Welcome / Login Page)
 class WelcomeLoginPage extends StatelessWidget {
   const WelcomeLoginPage({Key? key}) : super(key: key);
 
@@ -28,7 +29,6 @@ class WelcomeLoginPage extends StatelessWidget {
     return Scaffold(
       body: Container(
         decoration: const BoxDecoration(
-          // የላይቭ አፕ የሉክ የጸዳ ውብ ጥቁር እና ወርቃማ ከለር ድብልቅ (Luxury Dark & Gold Gradient)
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
@@ -45,7 +45,7 @@ class WelcomeLoginPage extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // ከላይ በግራ በኩል ያለው ሎጎ እና ስም (Aura Logo & Title)
+                // ከላይ በግራ በኩል ያለው ሎጎ እና ስም
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -119,7 +119,7 @@ class WelcomeLoginPage extends StatelessWidget {
 
                 const Spacer(),
 
-                // መካከለኛ ተጨማሪ የውበት ስዕል ወይም ምልክት
+                // መካከለኛ የውበት ምልክት (Star Icon)
                 Center(
                   child: Container(
                     padding: const EdgeInsets.all(20),
@@ -138,31 +138,45 @@ class WelcomeLoginPage extends StatelessWidget {
 
                 const Spacer(),
 
-                // የማህበራዊ ሚዲያ መግቢያ ቁልፎች (Social Logins)
+                // የማህበራዊ ሚዲያ መግቢያ ቁልፎች (ወደ ProfileSetupPage የሚወስድ)
                 _buildSocialButton(
                   icon: Icons.g_mobiledata,
                   iconColor: Colors.red,
                   text: 'Log in with Google',
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const ProfileSetupPage()),
+                    );
+                  },
                 ),
                 const SizedBox(height: 14),
                 _buildSocialButton(
                   icon: Icons.facebook,
                   iconColor: Colors.blue,
                   text: 'Log in with Facebook',
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const ProfileSetupPage()),
+                    );
+                  },
                 ),
                 const SizedBox(height: 14),
                 _buildSocialButton(
                   icon: Icons.camera_alt,
                   iconColor: Colors.purple,
                   text: 'Log in with Instagram',
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const ProfileSetupPage()),
+                    );
+                  },
                 ),
 
                 const SizedBox(height: 24),
 
-                // ተጨማሪ መግቢያ መንገዶች (More Login Methods)
                 const Row(
                   children: [
                     Expanded(child: Divider(color: Colors.white54)),
@@ -179,21 +193,25 @@ class WelcomeLoginPage extends StatelessWidget {
 
                 const SizedBox(height: 20),
 
-                // ከታች ያሉት አይኮኖች (Bottom Icons)
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    _buildBottomIcon(Icons.phone_android, () {}),
+                    _buildBottomIcon(Icons.phone_android, () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => const ProfileSetupPage()));
+                    }),
                     const SizedBox(width: 30),
-                    _buildBottomIcon(Icons.person_outline, () {}),
+                    _buildBottomIcon(Icons.person_outline, () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => const ProfileSetupPage()));
+                    }),
                     const SizedBox(width: 30),
-                    _buildBottomIcon(Icons.email_outlined, () {}),
+                    _buildBottomIcon(Icons.email_outlined, () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => const ProfileSetupPage()));
+                    }),
                   ],
                 ),
 
                 const SizedBox(height: 20),
 
-                // የውል ስምምነት ማስታወሻ
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -262,6 +280,226 @@ class WelcomeLoginPage extends StatelessWidget {
           border: Border.all(color: Colors.white30, width: 1),
         ),
         child: Icon(icon, color: Colors.white, size: 22),
+      ),
+    );
+  }
+}
+
+// 2. ሁለተኛው ገጽ፡ የፕሮፋይል ማስተካከያ እና የሆስት ባጅ (Profile Setup Page)
+class ProfileSetupPage extends StatefulWidget {
+  const ProfileSetupPage({Key? key}) : super(key: key);
+
+  @override
+  _ProfileSetupPageState createState() => _ProfileSetupPageState();
+}
+
+class _ProfileSetupPageState extends State<ProfileSetupPage> {
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _dobController = TextEditingController();
+  String _selectedGender = 'Male';
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: const Color(0xFF12121f),
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        title: const Text(
+          'Setup Profile',
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        ),
+        iconTheme: const Icon(Icons.arrow_back, color: Colors.white),
+      ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(24.0),
+        child: Column(
+          children: [
+            // Level 1 • Starter Host ባጅ (Badge)
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              decoration: BoxDecoration(
+                gradient: const LinearGradient(
+                  colors: [Colors.amber, Colors.orangeAccent],
+                ),
+                borderRadius: BorderRadius.circular(20),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.amber.withOpacity(0.4),
+                    blurRadius: 8,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
+              ),
+              child: const Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(Icons.verified, color: Colors.white, size: 18),
+                  SizedBox(width: 8),
+                  Text(
+                    'Level 1 • Starter Host',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 13,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+            const SizedBox(height: 24),
+
+            // የፕሮፋይል ፎቶ መምረጫ (Profile Picture Avatar)
+            Stack(
+              alignment: Alignment.bottomRight,
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    border: Border.all(color: Colors.amberAccent, width: 3),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.amber.withOpacity(0.3),
+                        blurRadius: 15,
+                        spreadRadius: 2,
+                      ),
+                    ],
+                  ),
+                  child: const CircleAvatar(
+                    radius: 50,
+                    backgroundColor: Colors.white24,
+                    child: Icon(Icons.person, size: 60, color: Colors.white70),
+                  ),
+                ),
+                Container(
+                  padding: const EdgeInsets.all(6),
+                  decoration: const BoxDecoration(
+                    color: Colors.amber,
+                    shape: BoxShape.circle,
+                  ),
+                  child: const Icon(Icons.camera_alt, color: Colors.white, size: 18),
+                ),
+              ],
+            ),
+
+            const SizedBox(height: 32),
+
+            // ስም ማስገቢያ (Full Name)
+            TextField(
+              controller: _nameController,
+              style: const TextStyle(color: Colors.white),
+              decoration: InputDecoration(
+                labelText: 'Nickname / Full Name',
+                labelStyle: const TextStyle(color: Colors.white70),
+                prefixIcon: const Icon(Icons.badge, color: Colors.amberAccent),
+                filled: true,
+                fillColor: Colors.white.withOpacity(0.08),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(14),
+                  borderSide: BorderSide.none,
+                ),
+              ),
+            ),
+
+            const SizedBox(height: 20),
+
+            // የልደት ቀን (Date of Birth)
+            TextField(
+              controller: _dobController,
+              style: const TextStyle(color: Colors.white),
+              decoration: InputDecoration(
+                labelText: 'Date of Birth (DD/MM/YYYY)',
+                labelStyle: const TextStyle(color: Colors.white70),
+                prefixIcon: const Icon(Icons.calendar_today, color: Colors.amberAccent),
+                filled: true,
+                fillColor: Colors.white.withOpacity(0.08),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(14),
+                  borderSide: BorderSide.none,
+                ),
+              ),
+            ),
+
+            const SizedBox(height: 24),
+
+            // ጾታ ምርጫ (Gender Selection)
+            Row(
+              children: [
+                const Text(
+                  'Gender:',
+                  style: TextStyle(color: Colors.white70, fontSize: 16),
+                ),
+                const SizedBox(width: 20),
+                Expanded(
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: RadioListTile<String>(
+                          title: const Text('Male', style: TextStyle(color: Colors.white, fontSize: 14)),
+                          value: 'Male',
+                          groupValue: _selectedGender,
+                          activeColor: Colors.amberAccent,
+                          contentPadding: EdgeInsets.zero,
+                          onChanged: (value) {
+                            setState(() {
+                              _selectedGender = value!;
+                            });
+                          },
+                        ),
+                      ),
+                      Expanded(
+                        child: RadioListTile<String>(
+                          title: const Text('Female', style: TextStyle(color: Colors.white, fontSize: 14)),
+                          value: 'Female',
+                          groupValue: _selectedGender,
+                          activeColor: Colors.amberAccent,
+                          contentPadding: EdgeInsets.zero,
+                          onChanged: (value) {
+                            setState(() {
+                              _selectedGender = value!;
+                            });
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+
+            const SizedBox(height: 40),
+
+            // Continue / Start Streaming ቁልፍ
+            SizedBox(
+              width: double.infinity,
+              height: 52,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.amber,
+                  foregroundColor: Colors.black87,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                  elevation: 6,
+                ),
+                onPressed: () {
+                  // ወደ ቀጣዩ የላይቭ ሩም ወይም መነሻ ገጽ የሚወስድበት ኮድ እዚህ ይገባል
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Profile Setup Completed Successfully!')),
+                  );
+                },
+                child: const Text(
+                  'Start Live Journey',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
