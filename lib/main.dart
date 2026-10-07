@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
 
 void main() {
   runApp(const AuraLiveApp());
@@ -29,241 +31,248 @@ class WelcomeLoginPage extends StatefulWidget {
 }
 
 class _WelcomeLoginPageState extends State<WelcomeLoginPage> {
-  bool _isLoading = false;
+  // እውነተኛ አካውንት መምረጫ ፖፕ-አፕ (Account Picker Dialog)
+  void _showAccountChooser(String providerName) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: const Color(0xFF1a1a2e),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+            side: const BorderSide(color: Colors.amberAccent, width: 1),
+          ),
+          title: Row(
+            children: [
+              const Icon(Icons.account_circle, color: Colors.amberAccent),
+              const SizedBox(width: 10),
+              Text(
+                'Choose $providerName Account',
+                style: const TextStyle(color: Colors.white, fontSize: 16),
+              ),
+            ],
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Text(
+                'Select an account to continue with Aura Live:',
+                style: TextStyle(color: Colors.white70, fontSize: 13),
+              ),
+              const SizedBox(height: 16),
+              _buildAccountOption('Temam Hussein (temam@gmail.com)', context),
+              const Divider(color: Colors.white24),
+              _buildAccountOption('Aura Host Official (host@aura.com)', context),
+            ],
+          ),
+        );
+      },
+    );
+  }
 
-  // የሎጊን ሂደቱን የሚያስመስል ፌክ (Simulation) ፋንክሽን
-  void _handleLogin(String providerName) async {
-    setState(() {
-      _isLoading = true;
-    });
-
-    // የሎጊን ሎዲንግ እና አካውንት ማረጋገጫ (2 ሰከንድ እንጠብቃለን)
-    await Future.delayed(const Duration(seconds: 2));
-
-    if (!mounted) return;
-
-    setState(() {
-      _isLoading = false;
-    });
-
-    // ወደ ፕሮፋይል ማስተካከያ ገጽ እንወስዳለን
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => const ProfileSetupPage()),
+  Widget _buildAccountOption(String email, BuildContext context) {
+    return ListTile(
+      leading: const CircleAvatar(
+        backgroundColor: Colors.amber,
+        child: Icon(Icons.person, color: Colors.black),
+      ),
+      title: Text(
+        email,
+        style: const TextStyle(color: Colors.white, fontSize: 13),
+      ),
+      onTap: () {
+        Navigator.pop(context); // ፖፕ-አፑን ዝጋ
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const ProfileSetupPage()),
+        );
+      },
     );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: [
-          Container(
-            decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [
-                  Color(0xFF1a1a2e),
-                  Color(0xFF16213e),
-                  Color(0xFF0f0f1a),
-                ],
-              ),
-            ),
-            child: SafeArea(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              Color(0xFF1a1a2e),
+              Color(0xFF16213e),
+              Color(0xFF0f0f1a),
+            ],
+          ),
+        ),
+        child: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // ከላይ በግራ በኩል ያለው ሎጎ እና ስም
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    // ከላይ በግራ በኩል ያለው ሎጎ እና ስም
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Row(
-                          children: [
-                            Container(
-                              padding: const EdgeInsets.all(8),
-                              decoration: BoxDecoration(
-                                gradient: const LinearGradient(
-                                  colors: [Colors.amber, Colors.orangeAccent, Colors.yellow],
-                                  begin: Alignment.topLeft,
-                                  end: Alignment.bottomRight,
-                                ),
-                                shape: BoxShape.circle,
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.amber.withOpacity(0.6),
-                                    blurRadius: 12,
-                                    spreadRadius: 3,
-                                    offset: const Offset(0, 2),
-                                  ),
-                                ],
-                                border: Border.all(color: Colors.white, width: 1.5),
-                              ),
-                              child: const Stack(
-                                alignment: Alignment.center,
-                                children: [
-                                  Icon(Icons.monetization_on, color: Colors.white, size: 22),
-                                  Positioned(
-                                    right: 0,
-                                    top: 0,
-                                    child: Icon(Icons.star, color: Colors.yellowAccent, size: 10),
-                                  ),
-                                ],
-                              ),
+                        Container(
+                          padding: const EdgeInsets.all(8),
+                          decoration: BoxDecoration(
+                            gradient: const LinearGradient(
+                              colors: [Colors.amber, Colors.orangeAccent, Colors.yellow],
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
                             ),
-                            const SizedBox(width: 12),
-                            const Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'AURA LIVE',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                    letterSpacing: 1.2,
-                                  ),
-                                ),
-                                Text(
-                                  'Party, Dollar & Shine',
-                                  style: TextStyle(
-                                    color: Colors.amberAccent,
-                                    fontSize: 10,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                        const Row(
-                          children: [
-                            Icon(Icons.person_outline, color: Colors.white70),
-                            SizedBox(width: 16),
-                            Icon(Icons.headset_mic, color: Colors.white70),
-                          ],
-                        ),
-                      ],
-                    ),
-
-                    const Spacer(),
-
-                    // መካከለኛ የውበት ምልክት (Star Icon)
-                    Center(
-                      child: Container(
-                        padding: const EdgeInsets.all(20),
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Colors.amber.withOpacity(0.1),
-                          border: Border.all(color: Colors.amber.withOpacity(0.3), width: 1.5),
-                        ),
-                        child: const Icon(
-                          Icons.star_rounded,
-                          size: 60,
-                          color: Colors.amberAccent,
-                        ),
-                      ),
-                    ),
-
-                    const Spacer(),
-
-                    // የማህበራዊ ሚዲያ መግቢያ ቁልፎች
-                    _buildSocialButton(
-                      icon: Icons.g_mobiledata,
-                      iconColor: Colors.red,
-                      text: 'Log in with Google',
-                      onPressed: () => _handleLogin('Google'),
-                    ),
-                    const SizedBox(height: 14),
-                    _buildSocialButton(
-                      icon: Icons.facebook,
-                      iconColor: Colors.blue,
-                      text: 'Log in with Facebook',
-                      onPressed: () => _handleLogin('Facebook'),
-                    ),
-                    const SizedBox(height: 14),
-                    _buildSocialButton(
-                      icon: Icons.camera_alt,
-                      iconColor: Colors.purple,
-                      text: 'Log in with Instagram',
-                      onPressed: () => _handleLogin('Instagram'),
-                    ),
-
-                    const SizedBox(height: 24),
-
-                    const Row(
-                      children: [
-                        Expanded(child: Divider(color: Colors.white54)),
-                        Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 12),
-                          child: Text(
-                            'More Login Methods',
-                            style: TextStyle(color: Colors.white70, fontSize: 12),
+                            shape: BoxShape.circle,
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.amber.withOpacity(0.6),
+                                blurRadius: 12,
+                                spreadRadius: 3,
+                                offset: const Offset(0, 2),
+                              ),
+                            ],
+                            border: Border.all(color: Colors.white, width: 1.5),
+                          ),
+                          child: const Stack(
+                            alignment: Alignment.center,
+                            children: [
+                              Icon(Icons.monetization_on, color: Colors.white, size: 22),
+                              Positioned(
+                                right: 0,
+                                top: 0,
+                                child: Icon(Icons.star, color: Colors.yellowAccent, size: 10),
+                              ),
+                            ],
                           ),
                         ),
-                        Expanded(child: Divider(color: Colors.white54)),
-                      ],
-                    ),
-
-                    const SizedBox(height: 20),
-
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        _buildBottomIcon(Icons.phone_android, () => _handleLogin('Phone')),
-                        const SizedBox(width: 30),
-                        _buildBottomIcon(Icons.person_outline, () => _handleLogin('ID/Guest')),
-                        const SizedBox(width: 30),
-                        _buildBottomIcon(Icons.email_outlined, () => _handleLogin('Email')),
-                      ],
-                    ),
-
-                    const SizedBox(height: 20),
-
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Icon(Icons.check_circle, color: Colors.amberAccent, size: 14),
-                        const SizedBox(width: 6),
-                        Text(
-                          'Logging in confirms you’re 18+ and agree to Terms',
-                          style: TextStyle(color: Colors.white.withOpacity(0.6), fontSize: 10),
-                          textAlign: TextAlign.center,
+                        const SizedBox(width: 12),
+                        const Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'AURA LIVE',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                letterSpacing: 1.2,
+                              ),
+                            ),
+                            Text(
+                              'Party, Dollar & Shine',
+                              style: TextStyle(
+                                color: Colors.amberAccent,
+                                fontSize: 10,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ],
                         ),
                       ],
                     ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-
-          // ሎዲንግ በሚኖርበት ጊዜ ከላይ የሚታይ ጭጋጋማ ማያ ገጽ (Loading Overlay)
-          if (_isLoading)
-            Container(
-              color: Colors.black.withOpacity(0.6),
-              child: const Center(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    CircularProgressIndicator(color: Colors.amberAccent),
-                    SizedBox(height: 16),
-                    Text(
-                      'Connecting to Account...',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        decoration: TextDecoration.none,
-                      ),
+                    const Row(
+                      children: [
+                        Icon(Icons.person_outline, color: Colors.white70),
+                        SizedBox(width: 16),
+                        Icon(Icons.headset_mic, color: Colors.white70),
+                      ],
                     ),
                   ],
                 ),
-              ),
+
+                const Spacer(),
+
+                // መካከለኛ የውበት ምልክት (Star Icon)
+                Center(
+                  child: Container(
+                    padding: const EdgeInsets.all(20),
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Colors.amber.withOpacity(0.1),
+                      border: Border.all(color: Colors.amber.withOpacity(0.3), width: 1.5),
+                    ),
+                    child: const Icon(
+                      Icons.star_rounded,
+                      size: 60,
+                      color: Colors.amberAccent,
+                    ),
+                  ),
+                ),
+
+                const Spacer(),
+
+                // የማህበራዊ ሚዲያ መግቢያ ቁልፎች
+                _buildSocialButton(
+                  icon: Icons.g_mobiledata,
+                  iconColor: Colors.red,
+                  text: 'Log in with Google',
+                  onPressed: () => _showAccountChooser('Google'),
+                ),
+                const SizedBox(height: 14),
+                _buildSocialButton(
+                  icon: Icons.facebook,
+                  iconColor: Colors.blue,
+                  text: 'Log in with Facebook',
+                  onPressed: () => _showAccountChooser('Facebook'),
+                ),
+                const SizedBox(height: 14),
+                _buildSocialButton(
+                  icon: Icons.camera_alt,
+                  iconColor: Colors.purple,
+                  text: 'Log in with Instagram',
+                  onPressed: () => _showAccountChooser('Instagram'),
+                ),
+
+                const SizedBox(height: 24),
+
+                const Row(
+                  children: [
+                    Expanded(child: Divider(color: Colors.white54)),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 12),
+                      child: Text(
+                        'More Login Methods',
+                        style: TextStyle(color: Colors.white70, fontSize: 12),
+                      ),
+                    ),
+                    Expanded(child: Divider(color: Colors.white54)),
+                  ],
+                ),
+
+                const SizedBox(height: 20),
+
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    _buildBottomIcon(Icons.phone_android, () => _showAccountChooser('Phone')),
+                    const SizedBox(width: 30),
+                    _buildBottomIcon(Icons.person_outline, () => _showAccountChooser('Guest')),
+                    const SizedBox(width: 30),
+                    _buildBottomIcon(Icons.email_outlined, () => _showAccountChooser('Email')),
+                  ],
+                ),
+
+                const SizedBox(height: 20),
+
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Icon(Icons.check_circle, color: Colors.amberAccent, size: 14),
+                    const SizedBox(width: 6),
+                    Text(
+                      'Logging in confirms you’re 18+ and agree to Terms',
+                      style: TextStyle(color: Colors.white.withOpacity(0.6), fontSize: 10),
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
+                ),
+              ],
             ),
-        ],
+          ),
+        ),
       ),
     );
   }
@@ -321,7 +330,7 @@ class _WelcomeLoginPageState extends State<WelcomeLoginPage> {
   }
 }
 
-// 2. ሁለተኛው ገጽ፡ የፕሮፋይል ማስተካከያ እና የሆስት ባጅ (Profile Setup Page)
+// 2. ሁለተኛው ገጽ፡ የፕሮፋይል ማስተካከያ እና የጋለሪ ፎቶ መምረጫ
 class ProfileSetupPage extends StatefulWidget {
   const ProfileSetupPage({Key? key}) : super(key: key);
 
@@ -333,6 +342,19 @@ class _ProfileSetupPageState extends State<ProfileSetupPage> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _dobController = TextEditingController();
   String _selectedGender = 'Male';
+  File? _imageFile; // ከስልክ ፋይል ማናጀር/ጋለሪ የሚመረጥ ፎቶ
+
+  // ከስልካችን ጋለሪ ፎቶ የመምረጫ ፋንክሽን
+  Future<void> _pickImageFromGallery() async {
+    final picker = ImagePicker();
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+
+    if (pickedFile != null) {
+      setState(() {
+        _imageFile = File(pickedFile.path);
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -386,37 +408,43 @@ class _ProfileSetupPageState extends State<ProfileSetupPage> {
 
             const SizedBox(height: 24),
 
-            // የፕሮፋይል ፎቶ መምረጫ (Profile Picture Avatar)
-            Stack(
-              alignment: Alignment.bottomRight,
-              children: [
-                Container(
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    border: Border.all(color: Colors.amberAccent, width: 3),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.amber.withOpacity(0.3),
-                        blurRadius: 15,
-                        spreadRadius: 2,
-                      ),
-                    ],
+            // የፕሮፋይል ፎቶ መምረጫ (Profile Picture Avatar from Gallery)
+            GestureDetector(
+              onTap: _pickImageFromGallery,
+              child: Stack(
+                alignment: Alignment.bottomRight,
+                children: [
+                  Container(
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(color: Colors.amberAccent, width: 3),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.amber.withOpacity(0.3),
+                          blurRadius: 15,
+                          spreadRadius: 2,
+                        ),
+                      ],
+                    ),
+                    child: CircleAvatar(
+                      radius: 50,
+                      backgroundColor: Colors.white24,
+                      backgroundImage: _imageFile != null ? FileImage(_imageFile!) : null,
+                      child: _imageFile == null
+                          ? const Icon(Icons.person, size: 60, color: Colors.white70)
+                          : null,
+                    ),
                   ),
-                  child: const CircleAvatar(
-                    radius: 50,
-                    backgroundColor: Colors.white24,
-                    child: Icon(Icons.person, size: 60, color: Colors.white70),
+                  Container(
+                    padding: const EdgeInsets.all(6),
+                    decoration: const BoxDecoration(
+                      color: Colors.amber,
+                      shape: BoxShape.circle,
+                    ),
+                    child: const Icon(Icons.camera_alt, color: Colors.white, size: 18),
                   ),
-                ),
-                Container(
-                  padding: const EdgeInsets.all(6),
-                  decoration: const BoxDecoration(
-                    color: Colors.amber,
-                    shape: BoxShape.circle,
-                  ),
-                  child: const Icon(Icons.camera_alt, color: Colors.white, size: 18),
-                ),
-              ],
+                ],
+              ),
             ),
 
             const SizedBox(height: 32),
@@ -506,7 +534,7 @@ class _ProfileSetupPageState extends State<ProfileSetupPage> {
 
             const SizedBox(height: 40),
 
-            // Continue / Start Streaming ቁልፍ
+            // Start Live Journey ቁልፍ
             SizedBox(
               width: double.infinity,
               height: 52,
