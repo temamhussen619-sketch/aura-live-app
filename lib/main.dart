@@ -12,17 +12,17 @@ class AuraLiveApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Poppo Live',
+      title: 'Aura Live',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primarySwatch: Colors.purple,
+        primarySwatch: Colors.amber,
       ),
       home: const WelcomeLoginPage(),
     );
   }
 }
 
-// 1. ሎጊን ገጽ (Welcome / Login Page - Poppo Style Light Theme)
+// 1. ሎጊን ገጽ (Welcome / Login Page - Aura Live with Logo)
 class WelcomeLoginPage extends StatefulWidget {
   const WelcomeLoginPage({Key? key}) : super(key: key);
 
@@ -44,15 +44,15 @@ class _WelcomeLoginPageState extends State<WelcomeLoginPage> {
               Container(
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  color: Colors.purple.withOpacity(0.1),
+                  color: Colors.amber.withOpacity(0.2),
                   borderRadius: BorderRadius.circular(8),
                 ),
-                child: const Text('po.', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20, color: Colors.purple)),
+                child: const Icon(Icons.star_rounded, color: Colors.amber, size: 30),
               ),
               const SizedBox(height: 12),
               const Text('Choose a Google account', style: TextStyle(color: Colors.black87, fontSize: 18, fontWeight: FontWeight.bold)),
               const SizedBox(height: 4),
-              const Text('to continue to Poppo Live', style: TextStyle(color: Colors.black54, fontSize: 13)),
+              const Text('to continue to Aura Live', style: TextStyle(color: Colors.black54, fontSize: 13)),
             ],
           ),
           content: SizedBox(
@@ -85,7 +85,7 @@ class _WelcomeLoginPageState extends State<WelcomeLoginPage> {
               const SizedBox(height: 8),
               const Text('Choose Facebook Account', style: TextStyle(color: Colors.black87, fontSize: 18, fontWeight: FontWeight.bold)),
               const SizedBox(height: 4),
-              const Text('Log in to Poppo Live as:', style: TextStyle(color: Colors.black54, fontSize: 13)),
+              const Text('Log in to Aura Live as:', style: TextStyle(color: Colors.black54, fontSize: 13)),
             ],
           ),
           content: SizedBox(
@@ -117,7 +117,7 @@ class _WelcomeLoginPageState extends State<WelcomeLoginPage> {
               const SizedBox(height: 8),
               const Text('Choose Instagram Account', style: TextStyle(color: Colors.black87, fontSize: 18, fontWeight: FontWeight.bold)),
               const SizedBox(height: 4),
-              const Text('Log in to Poppo Live as:', style: TextStyle(color: Colors.black54, fontSize: 13)),
+              const Text('Log in to Aura Live as:', style: TextStyle(color: Colors.black54, fontSize: 13)),
             ],
           ),
           content: SizedBox(
@@ -165,7 +165,7 @@ class _WelcomeLoginPageState extends State<WelcomeLoginPage> {
             style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 18),
           ),
           content: const Text(
-            'You need to read and agree before registering and logging in to Poppo Live Terms Of Service and Privacy Policy.',
+            'You need to read and agree before registering and logging in to Aura Live Terms Of Service and Privacy Policy.',
             style: TextStyle(color: Colors.black87, fontSize: 13),
           ),
           actions: [
@@ -174,7 +174,7 @@ class _WelcomeLoginPageState extends State<WelcomeLoginPage> {
               child: const Text('Cancel', style: TextStyle(color: Colors.grey)),
             ),
             ElevatedButton(
-              style: ElevatedButton.styleFrom(backgroundColor: Colors.purple),
+              style: ElevatedButton.styleFrom(backgroundColor: Colors.amber),
               onPressed: () {
                 Navigator.pop(context);
                 if (providerName == 'Google') {
@@ -190,7 +190,7 @@ class _WelcomeLoginPageState extends State<WelcomeLoginPage> {
                   );
                 }
               },
-              child: const Text('Accept', style: TextStyle(color: Colors.white)),
+              child: const Text('Accept', style: TextStyle(color: Colors.black)),
             ),
           ],
         );
@@ -233,30 +233,40 @@ class _WelcomeLoginPageState extends State<WelcomeLoginPage> {
                     ),
                   ),
                   const Spacer(),
+                  // የ AURA LIVE ሎጎ እና ስም
                   Row(
                     children: [
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                        padding: const EdgeInsets.all(10),
                         decoration: BoxDecoration(
-                          color: Colors.black,
-                          borderRadius: BorderRadius.circular(8),
+                          gradient: const LinearGradient(
+                            colors: [Colors.amber, Colors.orangeAccent, Colors.yellow],
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                          ),
+                          shape: BoxShape.circle,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.amber.withOpacity(0.6),
+                              blurRadius: 12,
+                              spreadRadius: 3,
+                            ),
+                          ],
+                          border: Border.all(color: Colors.white, width: 1.5),
                         ),
-                        child: const Text(
-                          'po.',
-                          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 22),
-                        ),
+                        child: const Icon(Icons.star_rounded, color: Colors.white, size: 28),
                       ),
-                      const SizedBox(width: 10),
+                      const SizedBox(width: 12),
                       const Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'POPPO',
-                            style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold),
+                            'AURA LIVE',
+                            style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold, letterSpacing: 1.2),
                           ),
                           Text(
-                            'From strangeness to intimacy',
-                            style: TextStyle(color: Colors.white70, fontSize: 11),
+                            'Party, Dollar & Shine',
+                            style: TextStyle(color: Colors.amberAccent, fontSize: 11, fontWeight: FontWeight.w500),
                           ),
                         ],
                       ),
@@ -289,7 +299,7 @@ class _WelcomeLoginPageState extends State<WelcomeLoginPage> {
                   const SizedBox(height: 20),
                   const Center(
                     child: Text(
-                      'Logging in confirms you’re 18+ and have read and agreed\nPoppo Live Terms Of Service and Privacy Policy',
+                      'Logging in confirms you’re 18+ and have read and agreed\nAura Live Terms Of Service and Privacy Policy',
                       style: TextStyle(color: Colors.white60, fontSize: 10),
                       textAlign: TextAlign.center,
                     ),
@@ -318,7 +328,7 @@ class _WelcomeLoginPageState extends State<WelcomeLoginPage> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(icon, color: Colors.purple, size: 24),
+            Icon(icon, color: Colors.amber, size: 24),
             const SizedBox(width: 8),
             Text(text, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
           ],
@@ -342,7 +352,7 @@ class _WelcomeLoginPageState extends State<WelcomeLoginPage> {
   }
 }
 
-// 2. ፕሮፋይል ማስተካከያ ገጽ ከጥብቅ ቫሊዴሽን ጋር (Profile Setup Page)
+// 2. ፕሮፋይል ማስተካከያ ገጽ ከቫሊዴሽን ጋር (Profile Setup Page)
 class ProfileSetupPage extends StatefulWidget {
   const ProfileSetupPage({Key? key}) : super(key: key);
 
@@ -358,6 +368,7 @@ class _ProfileSetupPageState extends State<ProfileSetupPage> {
   Future<void> _pickImageFromGallery() async {
     final picker = ImagePicker();
     final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+
     if (pickedFile != null) {
       setState(() {
         _imageFile = File(pickedFile.path);
@@ -368,10 +379,14 @@ class _ProfileSetupPageState extends State<ProfileSetupPage> {
   void _validateAndSubmit() {
     if (_nameController.text.trim().isEmpty || _dobController.text.trim().isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('እባክዎ ዩዘርኔም እና የልደት ቀን ይሙሉ!'), backgroundColor: Colors.red),
+        const SnackBar(
+          content: Text('እባክዎ ስምዎን እና የልደት ቀንዎን ያስገቡ!'),
+          backgroundColor: Colors.redAccent,
+        ),
       );
       return;
     }
+
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(builder: (context) => const LiveExplorePage()),
@@ -384,7 +399,11 @@ class _ProfileSetupPageState extends State<ProfileSetupPage> {
       backgroundColor: const Color(0xFF12121f),
       appBar: AppBar(
         backgroundColor: Colors.transparent,
-        title: const Text('Setup Profile', style: TextStyle(color: Colors.white)),
+        elevation: 0,
+        title: const Text(
+          'Setup Profile',
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        ),
         iconTheme: const IconThemeData(color: Colors.white),
       ),
       body: SingleChildScrollView(
@@ -393,45 +412,75 @@ class _ProfileSetupPageState extends State<ProfileSetupPage> {
           children: [
             GestureDetector(
               onTap: _pickImageFromGallery,
-              child: CircleAvatar(
-                radius: 50,
-                backgroundColor: Colors.white24,
-                backgroundImage: _imageFile != null ? FileImage(_imageFile!) : null,
-                child: _imageFile == null ? const Icon(Icons.camera_alt, size: 40, color: Colors.white70) : null,
+              child: Stack(
+                alignment: Alignment.bottomRight,
+                children: [
+                  CircleAvatar(
+                    radius: 50,
+                    backgroundColor: Colors.white24,
+                    backgroundImage: _imageFile != null ? FileImage(_imageFile!) : null,
+                    child: _imageFile == null ? const Icon(Icons.person, size: 60, color: Colors.white70) : null,
+                  ),
+                  Container(
+                    padding: const EdgeInsets.all(6),
+                    decoration: const BoxDecoration(
+                      color: Colors.amber,
+                      shape: BoxShape.circle,
+                    ),
+                    child: const Icon(Icons.camera_alt, color: Colors.white, size: 18),
+                  ),
+                ],
               ),
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: 32),
             TextField(
               controller: _nameController,
               style: const TextStyle(color: Colors.white),
               decoration: InputDecoration(
-                labelText: 'Nickname *',
+                labelText: 'Nickname / Full Name *',
                 labelStyle: const TextStyle(color: Colors.white70),
+                prefixIcon: const Icon(Icons.badge, color: Colors.amberAccent),
                 filled: true,
-                fillColor: Colors.white12,
-                border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                fillColor: Colors.white.withOpacity(0.08),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(14),
+                  borderSide: BorderSide.none,
+                ),
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 20),
             TextField(
               controller: _dobController,
               style: const TextStyle(color: Colors.white),
               decoration: InputDecoration(
                 labelText: 'Date of Birth (DD/MM/YYYY) *',
                 labelStyle: const TextStyle(color: Colors.white70),
+                prefixIcon: const Icon(Icons.calendar_today, color: Colors.amberAccent),
                 filled: true,
-                fillColor: Colors.white12,
-                border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                fillColor: Colors.white.withOpacity(0.08),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(14),
+                  borderSide: BorderSide.none,
+                ),
               ),
             ),
-            const SizedBox(height: 30),
+            const SizedBox(height: 40),
             SizedBox(
               width: double.infinity,
-              height: 50,
+              height: 52,
               child: ElevatedButton(
-                style: ElevatedButton.styleFrom(backgroundColor: Colors.purple),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.amber,
+                  foregroundColor: Colors.black87,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                ),
                 onPressed: _validateAndSubmit,
-                child: const Text('Start Live Journey', style: TextStyle(color: Colors.white, fontSize: 16)),
+                child: const Text(
+                  'Start Live Journey',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                ),
               ),
             ),
           ],
@@ -441,9 +490,61 @@ class _ProfileSetupPageState extends State<ProfileSetupPage> {
   }
 }
 
-// 3. የላይቭ ኤክስፕሎር ገጽ (Live Explore Page)
-class LiveExplorePage extends StatelessWidget {
+// 3. ዋናው የላይቭ ኤክስፕሎር ገጽ ከ Floating LIVE Button ጋር
+class LiveExplorePage extends StatefulWidget {
   const LiveExplorePage({Key? key}) : super(key: key);
+
+  @override
+  State<LiveExplorePage> createState() => _LiveExplorePageState();
+}
+
+class _LiveExplorePageState extends State<LiveExplorePage> with SingleTickerProviderStateMixin {
+  late TabController _tabController;
+  int _selectedCountryIndex = 0;
+
+  final List<Map<String, String>> countries = [
+    {'name': 'All', 'flag': '🌐'},
+    {'name': 'Philippines', 'flag': '🇵🇭'},
+    {'name': 'Nepal', 'flag': '🇳🇵'},
+    {'name': 'Ethiopia', 'flag': '🇪🇹'},
+  ];
+
+  final List<Map<String, dynamic>> liveStreams = [
+    {
+      'name': 'እስራኤል ትንሳኤፍሀ...',
+      'category': 'INFLUENCER',
+      'viewers': '5.5k',
+      'image': 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=500',
+      'flag': '🇪🇹',
+    },
+    {
+      'name': 'Entisar ✨',
+      'category': 'Chatting',
+      'viewers': '501',
+      'image': 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=500',
+      'flag': '🇪🇹',
+    },
+    {
+      'name': 'Tihitna @13',
+      'category': 'Music',
+      'viewers': '489',
+      'image': 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=500',
+      'flag': '🇪🇹',
+    },
+    {
+      'name': 'አፄንት ዘዘዘ',
+      'category': 'TOP 10 Hourly',
+      'viewers': '4.4K',
+      'image': 'https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=500',
+      'flag': '🇪🇹',
+    },
+  ];
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: 4, vsync: this);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -451,14 +552,362 @@ class LiveExplorePage extends StatelessWidget {
       backgroundColor: const Color(0xFF12121f),
       appBar: AppBar(
         backgroundColor: const Color(0xFF1a1a2e),
-        title: const Text('Poppo Live Explore', style: TextStyle(color: Colors.white)),
-      ),
-      body: const Center(
-        child: Text(
-          'Welcome to Poppo Live!',
-          style: TextStyle(color: Colors.white, fontSize: 18),
+        elevation: 0,
+        title: TabBar(
+          controller: _tabController,
+          isScrollable: true,
+          labelColor: Colors.amberAccent,
+          unselectedLabelColor: Colors.white60,
+          indicatorColor: Colors.amberAccent,
+          tabs: const [
+            Tab(text: 'Explore'),
+            Tab(text: 'For You'),
+            Tab(text: 'New'),
+            Tab(text: 'Nearby'),
+          ],
         ),
       ),
+      body: Stack(
+        children: [
+          Column(
+            children: [
+              Container(
+                height: 60,
+                padding: const EdgeInsets.symmetric(vertical: 10),
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: countries.length,
+                  itemBuilder: (context, index) {
+                    bool isSelected = _selectedCountryIndex == index;
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 6.0),
+                      child: ChoiceChip(
+                        avatar: Text(countries[index]['flag']!),
+                        label: Text(countries[index]['name']!),
+                        selected: isSelected,
+                        selectedColor: Colors.amber,
+                        backgroundColor: Colors.white12,
+                        labelStyle: TextStyle(
+                          color: isSelected ? Colors.black : Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        onSelected: (bool selected) {
+                          setState(() {
+                            _selectedCountryIndex = index;
+                          });
+                        },
+                      ),
+                    );
+                  },
+                ),
+              ),
+              Expanded(
+                child: GridView.builder(
+                  padding: const EdgeInsets.all(12),
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    crossAxisSpacing: 12,
+                    mainAxisSpacing: 12,
+                    childAspectRatio: 0.75,
+                  ),
+                  itemCount: liveStreams.length,
+                  itemBuilder: (context, index) {
+                    final stream = liveStreams[index];
+                    return GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => LiveRoomPage(
+                              hostName: stream['name'],
+                              hostImage: stream['image'],
+                              category: stream['category'],
+                            ),
+                          ),
+                        );
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(16),
+                          image: DecorationImage(
+                            image: NetworkImage(stream['image']),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(16),
+                            gradient: LinearGradient(
+                              begin: Alignment.topCenter,
+                              end: Alignment.bottomCenter,
+                              colors: [
+                                Colors.transparent,
+                                Colors.black.withOpacity(0.8),
+                              ],
+                            ),
+                          ),
+                          padding: const EdgeInsets.all(10),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Container(
+                                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                                decoration: BoxDecoration(
+                                  color: Colors.black45,
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: Text(
+                                  stream['category'],
+                                  style: const TextStyle(color: Colors.amberAccent, fontSize: 10, fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    stream['name'],
+                                    style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 13),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  const SizedBox(height: 4),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(stream['flag'], style: const TextStyle(fontSize: 12)),
+                                      Container(
+                                        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                                        decoration: BoxDecoration(
+                                          color: Colors.black54,
+                                          borderRadius: BorderRadius.circular(8),
+                                        ),
+                                        child: Text(
+                                          '📊 ${stream['viewers']}',
+                                          style: const TextStyle(color: Colors.white70, fontSize: 10),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ],
+          ),
+          
+          // ከስር በቀኝ በኩል የሚንሳፈፍ LIVE ቁልፍ
+          Positioned(
+            bottom: 20,
+            right: 20,
+            child: GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const LiveRoomPage(
+                      hostName: 'Temam Host',
+                      hostImage: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=500',
+                      category: 'LIVE STREAM',
+                    ),
+                  ),
+                );
+              },
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                decoration: BoxDecoration(
+                  gradient: const LinearGradient(
+                    colors: [Color(0xFFff416c), Color(0xFFff4b2b)],
+                  ),
+                  borderRadius: BorderRadius.circular(30),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.red.withOpacity(0.5),
+                      blurRadius: 10,
+                      offset: const Offset(0, 4),
+                    ),
+                  ],
+                ),
+                child: const Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(Icons.videocam, color: Colors.white, size: 20),
+                    SizedBox(width: 8),
+                    Text(
+                      'LIVE',
+                      style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: const Color(0xFF1a1a2e),
+        selectedItemColor: Colors.amberAccent,
+        unselectedItemColor: Colors.white60,
+        type: BottomNavigationBarType.fixed,
+        items: const [
+          BottomNavigationBarItem(icon: Icon(Icons.live_tv), label: 'Live'),
+          BottomNavigationBarItem(icon: Icon(Icons.monetization_on), label: 'Gifts'),
+          BottomNavigationBarItem(icon: Icon(Icons.public), label: 'Explore'),
+          BottomNavigationBarItem(icon: Icon(Icons.chat_bubble), label: 'Chats'),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
+        ],
+      ),
+    );
+  }
+}
+
+// 4. የላይቭ ሩም ገጽ (Live Streaming Room Page)
+class LiveRoomPage extends StatelessWidget {
+  final String hostName;
+  final String hostImage;
+  final String category;
+
+  const LiveRoomPage({
+    Key? key,
+    required this.hostName,
+    required this.hostImage,
+    required this.category,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Stack(
+        children: [
+          Positioned.fill(
+            child: Image.network(hostImage, fit: BoxFit.cover),
+          ),
+          Positioned.fill(
+            child: Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    Colors.black.withOpacity(0.6),
+                    Colors.transparent,
+                    Colors.black.withOpacity(0.8),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          SafeArea(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(4),
+                        decoration: BoxDecoration(
+                          color: Colors.black45,
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                        child: Row(
+                          children: [
+                            CircleAvatar(radius: 18, backgroundImage: NetworkImage(hostImage)),
+                            const SizedBox(width: 8),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text(hostName, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 12)),
+                                const Text('ID: 26948111', style: TextStyle(color: Colors.amberAccent, fontSize: 9)),
+                              ],
+                            ),
+                            const SizedBox(width: 10),
+                            Container(
+                              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                              decoration: BoxDecoration(color: Colors.amber, borderRadius: BorderRadius.circular(15)),
+                              child: const Text('Follow', style: TextStyle(color: Colors.black, fontSize: 11, fontWeight: FontWeight.bold)),
+                            ),
+                          ],
+                        ),
+                      ),
+                      IconButton(
+                        icon: const Icon(Icons.close, color: Colors.white),
+                        onPressed: () => Navigator.pop(context),
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        height: 120,
+                        width: 250,
+                        padding: const EdgeInsets.all(8),
+                        decoration: BoxDecoration(color: Colors.black26, borderRadius: BorderRadius.circular(12)),
+                        child: const Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Text('Aura System: Welcome to the live room!', style: TextStyle(color: Colors.amberAccent, fontSize: 11)),
+                            SizedBox(height: 4),
+                            Text('Temam: ሰላም ለዚህ ሩም ሰወች! 👋', style: TextStyle(color: Colors.white, fontSize: 12)),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 12),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Container(
+                              height: 40,
+                              padding: const EdgeInsets.symmetric(horizontal: 12),
+                              decoration: BoxDecoration(
+                                color: Colors.black54,
+                                borderRadius: BorderRadius.circular(20),
+                                border: Border.all(color: Colors.white24),
+                              ),
+                              child: const Align(
+                                alignment: Alignment.centerLeft,
+                                child: Text('Say something...', style: TextStyle(color: Colors.white60, fontSize: 13)),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(width: 8),
+                          _buildRoomIcon(Icons.mic),
+                          const SizedBox(width: 8),
+                          _buildRoomIcon(Icons.card_giftcard, color: Colors.amberAccent),
+                          const SizedBox(width: 8),
+                          _buildRoomIcon(Icons.favorite, color: Colors.redAccent),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildRoomIcon(IconData icon, {Color color = Colors.white}) {
+    return Container(
+      padding: const EdgeInsets.all(8),
+      decoration: const BoxDecoration(color: Colors.black54, shape: BoxShape.circle),
+      child: Icon(icon, color: color, size: 22),
     );
   }
 }
