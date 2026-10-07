@@ -309,7 +309,7 @@ class _ProfileSetupPageState extends State<ProfileSetupPage> {
           'Setup Profile',
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
-        iconTheme: const Icon(Icons.arrow_back, color: Colors.white),
+        iconTheme: const IconThemeData(color: Colors.white), // የተስተካከለው መስመር
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(24.0),
@@ -484,7 +484,6 @@ class _ProfileSetupPageState extends State<ProfileSetupPage> {
                   elevation: 6,
                 ),
                 onPressed: () {
-                  // ወደ ቀጣዩ የላይቭ ሩም ወይም መነሻ ገጽ የሚወስድበት ኮድ እዚህ ይገባል
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(content: Text('Profile Setup Completed Successfully!')),
                   );
