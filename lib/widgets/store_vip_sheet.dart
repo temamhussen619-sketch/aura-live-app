@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-// 1. Store Bottom Sheet (ሱቅ እና ፌቸሮች)
 class StoreBottomSheet extends StatelessWidget {
   const StoreBottomSheet({Key? key}) : super(key: key);
 
@@ -41,7 +40,7 @@ class StoreBottomSheet extends StatelessWidget {
           GridView.count(
             crossAxisCount: 2,
             shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics,
+            physics: const NeverScrollableScrollPhysics(),
             mainAxisSpacing: 10,
             crossAxisSpacing: 10,
             childAspectRatio: 2.5,
@@ -84,7 +83,6 @@ class StoreBottomSheet extends StatelessWidget {
   }
 }
 
-// 2. VIP Tiers Bottom Sheet (የቪአይፒ ደረጃዎች)
 class VipBottomSheet extends StatelessWidget {
   const VipBottomSheet({Key? key}) : super(key: key);
 
