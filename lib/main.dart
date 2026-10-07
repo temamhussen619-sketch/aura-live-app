@@ -54,14 +54,14 @@ class _WelcomeLoginPageState extends State<WelcomeLoginPage> {
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Text(
-                'Select an account to continue with Aura Live:',
-                style: TextStyle(color: Colors.white70, fontSize: 13),
+              Text(
+                'Authenticating with $providerName...',
+                style: const TextStyle(color: Colors.white70, fontSize: 13),
               ),
               const SizedBox(height: 16),
-              _buildAccountOption('Temam Hussein (temam@gmail.com)', context),
+              _buildAccountOption('Temam Hussein (temam@gmail.com)', providerName, context),
               const Divider(color: Colors.white24),
-              _buildAccountOption('Aura Host Official (host@aura.com)', context),
+              _buildAccountOption('Aura Host Official (host@aura.com)', providerName, context),
             ],
           ),
         );
@@ -69,7 +69,7 @@ class _WelcomeLoginPageState extends State<WelcomeLoginPage> {
     );
   }
 
-  Widget _buildAccountOption(String email, BuildContext context) {
+  Widget _buildAccountOption(String email, String providerName, BuildContext context) {
     return ListTile(
       leading: const CircleAvatar(
         backgroundColor: Colors.amber,
@@ -81,6 +81,9 @@ class _WelcomeLoginPageState extends State<WelcomeLoginPage> {
       ),
       onTap: () {
         Navigator.pop(context);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Successfully authenticated with $providerName!')),
+        );
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => const ProfileSetupPage()),
@@ -316,7 +319,7 @@ class _WelcomeLoginPageState extends State<WelcomeLoginPage> {
   }
 }
 
-// 2. ፕሮፋይል ማስተካከያ ገጽ (Profile Setup Page)
+// 2. ፕሮፋይል ማስተካከያ ገጽ ከ ቫሊዴሽን ጋር (Profile Setup Page with Validation)
 class ProfileSetupPage extends StatefulWidget {
   const ProfileSetupPage({Key? key}) : super(key: key);
 
@@ -339,6 +342,23 @@ class _ProfileSetupPageState extends State<ProfileSetupPage> {
         _imageFile = File(pickedFile.path);
       });
     }
+  }
+
+  void _validateAndSubmit() {
+    if (_nameController.text.trim().isEmpty || _dobController.text.trim().isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('እባክዎ ስምዎን እና የልደት ቀንዎን ያስገቡ! (Please fill name and DOB)'),
+          backgroundColor: Colors.redAccent,
+        ),
+      );
+      return;
+    }
+
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => const LiveExplorePage()),
+    );
   }
 
   @override
@@ -432,7 +452,7 @@ class _ProfileSetupPageState extends State<ProfileSetupPage> {
               controller: _nameController,
               style: const TextStyle(color: Colors.white),
               decoration: InputDecoration(
-                labelText: 'Nickname / Full Name',
+                labelText: 'Nickname / Full Name *',
                 labelStyle: const TextStyle(color: Colors.white70),
                 prefixIcon: const Icon(Icons.badge, color: Colors.amberAccent),
                 filled: true,
@@ -448,7 +468,7 @@ class _ProfileSetupPageState extends State<ProfileSetupPage> {
               controller: _dobController,
               style: const TextStyle(color: Colors.white),
               decoration: InputDecoration(
-                labelText: 'Date of Birth (DD/MM/YYYY)',
+                labelText: 'Date of Birth (DD/MM/YYYY) *',
                 labelStyle: const TextStyle(color: Colors.white70),
                 prefixIcon: const Icon(Icons.calendar_today, color: Colors.amberAccent),
                 filled: true,
@@ -516,12 +536,7 @@ class _ProfileSetupPageState extends State<ProfileSetupPage> {
                   ),
                   elevation: 6,
                 ),
-                onPressed: () {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(builder: (context) => const LiveExplorePage()),
-                  );
-                },
+                onPressed: _validateAndSubmit,
                 child: const Text(
                   'Start Live Journey',
                   style: TextStyle(
@@ -538,7 +553,7 @@ class _ProfileSetupPageState extends State<ProfileSetupPage> {
   }
 }
 
-// 3. ዋናው የላይቭ ኤክስፕሎር ገጽ (Explore, For You, New, Nearby እና Floating LIVE Button)
+// 3. ዋናው የላይቭ ኤክስፕሎር ገጽ (Explore, For You, New, Nearby)
 class LiveExplorePage extends StatefulWidget {
   const LiveExplorePage({Key? key}) : super(key: key);
 
@@ -755,7 +770,7 @@ class _LiveExplorePageState extends State<LiveExplorePage> with SingleTickerProv
             ],
           ),
           
-          // ከስር በቀኝ በኩል የሚንሳፈፍ (Floating) የ LIVE ቁልፍ ከካሜራ ሎጎ ጋር
+          // ከስር በቀኝ በኩል የሚንሳፈፍ LIVE ቁልፍ
           Positioned(
             bottom: 20,
             right: 20,
