@@ -22,7 +22,7 @@ class AuraLiveApp extends StatelessWidget {
   }
 }
 
-// 1. መጀመሪያ የሚከፈተው የሎጊን ገጽ (Welcome / Login Page)
+// 1. ሎጊን ገጽ (Welcome / Login Page)
 class WelcomeLoginPage extends StatefulWidget {
   const WelcomeLoginPage({Key? key}) : super(key: key);
 
@@ -316,7 +316,7 @@ class _WelcomeLoginPageState extends State<WelcomeLoginPage> {
   }
 }
 
-// 2. የፕሮፋይል ማስተካከያ ገጽ (Profile Setup Page)
+// 2. ፕሮፋይል ማስተካከያ ገጽ (Profile Setup Page)
 class ProfileSetupPage extends StatefulWidget {
   const ProfileSetupPage({Key? key}) : super(key: key);
 
@@ -517,7 +517,6 @@ class _ProfileSetupPageState extends State<ProfileSetupPage> {
                   elevation: 6,
                 ),
                 onPressed: () {
-                  // ወደ ላይቭ ኤክስፕሎር ዋና ገጽ መሸጋገሪያ
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(builder: (context) => const LiveExplorePage()),
@@ -539,7 +538,7 @@ class _ProfileSetupPageState extends State<ProfileSetupPage> {
   }
 }
 
-// 3. ዋናው የላይቭ ኤክስፕሎር ገጽ (Explore, For You, New, Nearby ከ ሀገር ማጣሪያ ጋር)
+// 3. ዋናው የላይቭ ኤክስፕሎር ገጽ (Explore, For You, New, Nearby እና Floating LIVE Button)
 class LiveExplorePage extends StatefulWidget {
   const LiveExplorePage({Key? key}) : super(key: key);
 
@@ -593,42 +592,6 @@ class _LiveExplorePageState extends State<LiveExplorePage> with SingleTickerProv
   void initState() {
     super.initState();
     _tabController = TabController(length: 4, vsync: this);
-    _tabController.addListener(() {
-      if (_tabController.index == 3) {
-        // Nearby ሲመረጥ የሎኬሽን ፍቃድ ጥያቄ ፖፕ-አፕ ማሳየት
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          _showLocationPermissionDialog();
-        });
-      }
-    });
-  }
-
-  void _showLocationPermissionDialog() {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        backgroundColor: const Color(0xFF1a1a2e),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        title: const Text('Requesting location access', style: TextStyle(color: Colors.white, fontSize: 16)),
-        content: const Text('You can find streamers near you', style: TextStyle(color: Colors.white70, fontSize: 13)),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel', style: TextStyle(color: Colors.grey)),
-          ),
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(backgroundColor: Colors.amber),
-            onPressed: () {
-              Navigator.pop(context);
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Location Access Granted!')),
-              );
-            },
-            child: const Text('Open', style: TextStyle(color: Colors.black)),
-          ),
-        ],
-      ),
-    );
   }
 
   @override
@@ -657,123 +620,193 @@ class _LiveExplorePageState extends State<LiveExplorePage> with SingleTickerProv
           IconButton(icon: const Icon(Icons.emoji_events, color: Colors.amberAccent), onPressed: () {}),
         ],
       ),
-      body: Column(
+      body: Stack(
         children: [
-          // አግድም የሀገር ባንዲራዎች ማጣሪያ (Horizontal Country Flags Selector)
-          Container(
-            height: 60,
-            padding: const EdgeInsets.symmetric(vertical: 10),
-            child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: countries.length,
-              itemBuilder: (context, index) {
-                bool isSelected = _selectedCountryIndex == index;
-                return Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 6.0),
-                  child: ChoiceChip(
-                    avatar: Text(countries[index]['flag']!),
-                    label: Text(countries[index]['name']!),
-                    selected: isSelected,
-                    selectedColor: Colors.amber,
-                    backgroundColor: Colors.white12,
-                    labelStyle: TextStyle(
-                      color: isSelected ? Colors.black : Colors.white,
-                      fontWeight: FontWeight.bold,
-                    ),
-                    onSelected: (bool selected) {
-                      setState(() {
-                        _selectedCountryIndex = index;
-                      });
-                    },
-                  ),
-                );
-              },
-            ),
-          ),
-
-          // የላይቭ ሩሞች ግሪድ (Grid View of Live Streams)
-          Expanded(
-            child: GridView.builder(
-              padding: const EdgeInsets.all(12),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                crossAxisSpacing: 12,
-                mainAxisSpacing: 12,
-                childAspectRatio: 0.75,
-              ),
-              itemCount: liveStreams.length,
-              itemBuilder: (context, index) {
-                final stream = liveStreams[index];
-                return Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(16),
-                    image: DecorationImage(
-                      image: NetworkImage(stream['image']),
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(16),
-                      gradient: LinearGradient(
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        colors: [
-                          Colors.transparent,
-                          Colors.black.withOpacity(0.8),
-                        ],
+          Column(
+            children: [
+              Container(
+                height: 60,
+                padding: const EdgeInsets.symmetric(vertical: 10),
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: countries.length,
+                  itemBuilder: (context, index) {
+                    bool isSelected = _selectedCountryIndex == index;
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 6.0),
+                      child: ChoiceChip(
+                        avatar: Text(countries[index]['flag']!),
+                        label: Text(countries[index]['name']!),
+                        selected: isSelected,
+                        selectedColor: Colors.amber,
+                        backgroundColor: Colors.white12,
+                        labelStyle: TextStyle(
+                          color: isSelected ? Colors.black : Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        onSelected: (bool selected) {
+                          setState(() {
+                            _selectedCountryIndex = index;
+                          });
+                        },
                       ),
-                    ),
-                    padding: const EdgeInsets.all(10),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                          decoration: BoxDecoration(
-                            color: Colors.black45,
-                            borderRadius: BorderRadius.circular(10),
+                    );
+                  },
+                ),
+              ),
+              Expanded(
+                child: GridView.builder(
+                  padding: const EdgeInsets.all(12),
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    crossAxisSpacing: 12,
+                    mainAxisSpacing: 12,
+                    childAspectRatio: 0.75,
+                  ),
+                  itemCount: liveStreams.length,
+                  itemBuilder: (context, index) {
+                    final stream = liveStreams[index];
+                    return GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => LiveRoomPage(
+                              hostName: stream['name'],
+                              hostImage: stream['image'],
+                              category: stream['category'],
+                            ),
                           ),
-                          child: Text(
-                            stream['category'],
-                            style: const TextStyle(color: Colors.amberAccent, fontSize: 10, fontWeight: FontWeight.bold),
+                        );
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(16),
+                          image: DecorationImage(
+                            image: NetworkImage(stream['image']),
+                            fit: BoxFit.cover,
                           ),
                         ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              stream['name'],
-                              style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 13),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                            const SizedBox(height: 4),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(stream['flag'], style: const TextStyle(fontSize: 12)),
-                                Container(
-                                  padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                                  decoration: BoxDecoration(
-                                    color: Colors.black54,
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                  child: Text(
-                                    '📊 ${stream['viewers']}',
-                                    style: const TextStyle(color: Colors.white70, fontSize: 10),
-                                  ),
-                                ),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(16),
+                            gradient: LinearGradient(
+                              begin: Alignment.topCenter,
+                              end: Alignment.bottomCenter,
+                              colors: [
+                                Colors.transparent,
+                                Colors.black.withOpacity(0.8),
                               ],
                             ),
-                          ],
+                          ),
+                          padding: const EdgeInsets.all(10),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Container(
+                                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                                decoration: BoxDecoration(
+                                  color: Colors.black45,
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: Text(
+                                  stream['category'],
+                                  style: const TextStyle(color: Colors.amberAccent, fontSize: 10, fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                              Column(
+                                CrossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    stream['name'],
+                                    style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 13),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  const SizedBox(height: 4),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(stream['flag'], style: const TextStyle(fontSize: 12)),
+                                      Container(
+                                        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                                        decoration: BoxDecoration(
+                                          color: Colors.black54,
+                                          borderRadius: BorderRadius.circular(8),
+                                        ),
+                                        child: Text(
+                                          '📊 ${stream['viewers']}',
+                                          style: const TextStyle(color: Colors.white70, fontSize: 10),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
-                      ],
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ],
+          ),
+          
+          // ከላይ እንደታየው ከስር በቀኝ በኩል የሚንሳፈፍ (Floating) የ LIVE ቁልፍ ከካሜራ ሎጎ ጋር
+          Positioned(
+            bottom: 20,
+            right: 20,
+            child: GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const LiveRoomPage(
+                      hostName: 'Temam Host',
+                      hostImage: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=500',
+                      category: 'LIVE STREAM',
                     ),
                   ),
                 );
               },
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                decoration: BoxDecoration(
+                  gradient: const LinearGradient(
+                    colors: [Color(0xFFff416c), Color(0xFFff4b2b)],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                  borderRadius: BorderRadius.circular(30),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.red.withOpacity(0.5),
+                      blurRadius: 10,
+                      spreadRadius: 2,
+                      offset: const Offset(0, 4),
+                    ),
+                  ],
+                ),
+                child: const Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(Icons.videocam, color: Colors.white, size: 20),
+                    SizedBox(width: 8),
+                    Text(
+                      'LIVE',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 14,
+                        letterSpacing: 1.1,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ),
           ),
         ],
@@ -791,6 +824,184 @@ class _LiveExplorePageState extends State<LiveExplorePage> with SingleTickerProv
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
         ],
       ),
+    );
+  }
+}
+
+// 4. የላይቭ ሩም ገጽ (Live Streaming Room Page)
+class LiveRoomPage extends StatelessWidget {
+  final String hostName;
+  final String hostImage;
+  final String category;
+
+  const LiveRoomPage({
+    Key? key,
+    required this.hostName,
+    required this.hostImage,
+    required this.category,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Stack(
+        children: [
+          Positioned.fill(
+            child: Image.network(
+              hostImage,
+              fit: BoxFit.cover,
+            ),
+          ),
+          Positioned.fill(
+            child: Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    Colors.black.withOpacity(0.6),
+                    Colors.transparent,
+                    Colors.black.withOpacity(0.8),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          SafeArea(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(4),
+                        decoration: BoxDecoration(
+                          color: Colors.black45,
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                        child: Row(
+                          children: [
+                            CircleAvatar(
+                              radius: 18,
+                              backgroundImage: NetworkImage(hostImage),
+                            ),
+                            const SizedBox(width: 8),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text(
+                                  hostName,
+                                  style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 12),
+                                ),
+                                const Text(
+                                  'ID: 26948111',
+                                  style: TextStyle(color: Colors.amberAccent, fontSize: 9),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(width: 10),
+                            Container(
+                              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                              decoration: BoxDecoration(
+                                color: Colors.amber,
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                              child: const Text(
+                                'Follow',
+                                style: TextStyle(color: Colors.black, fontSize: 11, fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      IconButton(
+                        icon: const Icon(Icons.close, color: Colors.white),
+                        onPressed: () => Navigator.pop(context),
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        height: 120,
+                        width: 250,
+                        padding: const EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                          color: Colors.black26,
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: const Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Text(
+                              'Aura System: Welcome to the live room! Be polite and enjoy.',
+                              style: TextStyle(color: Colors.amberAccent, fontSize: 11),
+                            ),
+                            SizedBox(height: 4),
+                            Text(
+                              'Temam: ሰላም ለዚህ ሩም ሰወች! 👋',
+                              style: TextStyle(color: Colors.white, fontSize: 12),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 12),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Container(
+                              height: 40,
+                              padding: const EdgeInsets.symmetric(horizontal: 12),
+                              decoration: BoxDecoration(
+                                color: Colors.black54,
+                                borderRadius: BorderRadius.circular(20),
+                                border: Border.all(color: Colors.white24),
+                              ),
+                              child: const Align(
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  'Say something...',
+                                  style: TextStyle(color: Colors.white60, fontSize: 13),
+                                ),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(width: 8),
+                          _buildRoomIcon(Icons.mic),
+                          const SizedBox(width: 8),
+                          _buildRoomIcon(Icons.card_giftcard, color: Colors.amberAccent),
+                          const SizedBox(width: 8),
+                          _buildRoomIcon(Icons.favorite, color: Colors.redAccent),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildRoomIcon(IconData icon, {Color color = Colors.white}) {
+    return Container(
+      padding: const EdgeInsets.all(8),
+      decoration: const BoxDecoration(
+        color: Colors.black54,
+        shape: BoxShape.circle,
+      ),
+      child: Icon(icon, color: color, size: 22),
     );
   }
 }
