@@ -716,7 +716,7 @@ class _LiveExplorePageState extends State<LiveExplorePage> with SingleTickerProv
                                 ),
                               ),
                               Column(
-                                CrossAxisAlignment: CrossAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
                                     stream['name'],
@@ -755,7 +755,7 @@ class _LiveExplorePageState extends State<LiveExplorePage> with SingleTickerProv
             ],
           ),
           
-          // ከላይ እንደታየው ከስር በቀኝ በኩል የሚንሳፈፍ (Floating) የ LIVE ቁልፍ ከካሜራ ሎጎ ጋር
+          // ከስር በቀኝ በኩል የሚንሳፈፍ (Floating) የ LIVE ቁልፍ ከካሜራ ሎጎ ጋር
           Positioned(
             bottom: 20,
             right: 20,
