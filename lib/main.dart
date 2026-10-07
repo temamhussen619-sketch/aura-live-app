@@ -31,7 +31,6 @@ class WelcomeLoginPage extends StatefulWidget {
 }
 
 class _WelcomeLoginPageState extends State<WelcomeLoginPage> {
-  // እውነተኛ አካውንት መምረጫ ፖፕ-አፕ (Account Picker Dialog)
   void _showAccountChooser(String providerName) {
     showDialog(
       context: context,
@@ -81,7 +80,7 @@ class _WelcomeLoginPageState extends State<WelcomeLoginPage> {
         style: const TextStyle(color: Colors.white, fontSize: 13),
       ),
       onTap: () {
-        Navigator.pop(context); // ፖፕ-አፑን ዝጋ
+        Navigator.pop(context);
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => const ProfileSetupPage()),
@@ -111,7 +110,6 @@ class _WelcomeLoginPageState extends State<WelcomeLoginPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // ከላይ በግራ በኩል ያለው ሎጎ እና ስም
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -182,10 +180,7 @@ class _WelcomeLoginPageState extends State<WelcomeLoginPage> {
                     ),
                   ],
                 ),
-
                 const Spacer(),
-
-                // መካከለኛ የውበት ምልክት (Star Icon)
                 Center(
                   child: Container(
                     padding: const EdgeInsets.all(20),
@@ -201,10 +196,7 @@ class _WelcomeLoginPageState extends State<WelcomeLoginPage> {
                     ),
                   ),
                 ),
-
                 const Spacer(),
-
-                // የማህበራዊ ሚዲያ መግቢያ ቁልፎች
                 _buildSocialButton(
                   icon: Icons.g_mobiledata,
                   iconColor: Colors.red,
@@ -225,9 +217,7 @@ class _WelcomeLoginPageState extends State<WelcomeLoginPage> {
                   text: 'Log in with Instagram',
                   onPressed: () => _showAccountChooser('Instagram'),
                 ),
-
                 const SizedBox(height: 24),
-
                 const Row(
                   children: [
                     Expanded(child: Divider(color: Colors.white54)),
@@ -241,9 +231,7 @@ class _WelcomeLoginPageState extends State<WelcomeLoginPage> {
                     Expanded(child: Divider(color: Colors.white54)),
                   ],
                 ),
-
                 const SizedBox(height: 20),
-
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -254,9 +242,7 @@ class _WelcomeLoginPageState extends State<WelcomeLoginPage> {
                     _buildBottomIcon(Icons.email_outlined, () => _showAccountChooser('Email')),
                   ],
                 ),
-
                 const SizedBox(height: 20),
-
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -330,7 +316,7 @@ class _WelcomeLoginPageState extends State<WelcomeLoginPage> {
   }
 }
 
-// 2. ሁለተኛው ገጽ፡ የፕሮፋይል ማስተካከያ እና የጋለሪ ፎቶ መምረጫ
+// 2. የፕሮፋይል ማስተካከያ ገጽ (Profile Setup Page)
 class ProfileSetupPage extends StatefulWidget {
   const ProfileSetupPage({Key? key}) : super(key: key);
 
@@ -342,9 +328,8 @@ class _ProfileSetupPageState extends State<ProfileSetupPage> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _dobController = TextEditingController();
   String _selectedGender = 'Male';
-  File? _imageFile; // ከስልክ ፋይል ማናጀር/ጋለሪ የሚመረጥ ፎቶ
+  File? _imageFile;
 
-  // ከስልካችን ጋለሪ ፎቶ የመምረጫ ፋንክሽን
   Future<void> _pickImageFromGallery() async {
     final picker = ImagePicker();
     final pickedFile = await picker.pickImage(source: ImageSource.gallery);
@@ -373,7 +358,6 @@ class _ProfileSetupPageState extends State<ProfileSetupPage> {
         padding: const EdgeInsets.all(24.0),
         child: Column(
           children: [
-            // Level 1 • Starter Host ባጅ (Badge)
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               decoration: BoxDecoration(
@@ -405,10 +389,7 @@ class _ProfileSetupPageState extends State<ProfileSetupPage> {
                 ],
               ),
             ),
-
             const SizedBox(height: 24),
-
-            // የፕሮፋይል ፎቶ መምረጫ (Profile Picture Avatar from Gallery)
             GestureDetector(
               onTap: _pickImageFromGallery,
               child: Stack(
@@ -446,10 +427,7 @@ class _ProfileSetupPageState extends State<ProfileSetupPage> {
                 ],
               ),
             ),
-
             const SizedBox(height: 32),
-
-            // ስም ማስገቢያ (Full Name)
             TextField(
               controller: _nameController,
               style: const TextStyle(color: Colors.white),
@@ -465,10 +443,7 @@ class _ProfileSetupPageState extends State<ProfileSetupPage> {
                 ),
               ),
             ),
-
             const SizedBox(height: 20),
-
-            // የልደት ቀን (Date of Birth)
             TextField(
               controller: _dobController,
               style: const TextStyle(color: Colors.white),
@@ -484,10 +459,7 @@ class _ProfileSetupPageState extends State<ProfileSetupPage> {
                 ),
               ),
             ),
-
             const SizedBox(height: 24),
-
-            // ጾታ ምርጫ (Gender Selection)
             Row(
               children: [
                 const Text(
@@ -531,10 +503,7 @@ class _ProfileSetupPageState extends State<ProfileSetupPage> {
                 ),
               ],
             ),
-
             const SizedBox(height: 40),
-
-            // Start Live Journey ቁልፍ
             SizedBox(
               width: double.infinity,
               height: 52,
@@ -548,8 +517,10 @@ class _ProfileSetupPageState extends State<ProfileSetupPage> {
                   elevation: 6,
                 ),
                 onPressed: () {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Profile Setup Completed Successfully!')),
+                  // ወደ ላይቭ ኤክስፕሎር ዋና ገጽ መሸጋገሪያ
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => const LiveExplorePage()),
                   );
                 },
                 child: const Text(
@@ -563,6 +534,262 @@ class _ProfileSetupPageState extends State<ProfileSetupPage> {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+// 3. ዋናው የላይቭ ኤክስፕሎር ገጽ (Explore, For You, New, Nearby ከ ሀገር ማጣሪያ ጋር)
+class LiveExplorePage extends StatefulWidget {
+  const LiveExplorePage({Key? key}) : super(key: key);
+
+  @override
+  State<LiveExplorePage> createState() => _LiveExplorePageState();
+}
+
+class _LiveExplorePageState extends State<LiveExplorePage> with SingleTickerProviderStateMixin {
+  late TabController _tabController;
+  int _selectedCountryIndex = 0;
+
+  final List<Map<String, String>> countries = [
+    {'name': 'All', 'flag': '🌐'},
+    {'name': 'Philippines', 'flag': '🇵🇭'},
+    {'name': 'Nepal', 'flag': '🇳🇵'},
+    {'name': 'Ethiopia', 'flag': '🇪🇹'},
+  ];
+
+  final List<Map<String, dynamic>> liveStreams = [
+    {
+      'name': 'እስራኤል ትንሳኤፍሀ...',
+      'category': 'INFLUENCER',
+      'viewers': '5.5k',
+      'image': 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=500',
+      'flag': '🇪🇹',
+    },
+    {
+      'name': 'Entisar ✨',
+      'category': 'Chatting',
+      'viewers': '501',
+      'image': 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=500',
+      'flag': '🇪🇹',
+    },
+    {
+      'name': 'Tihitna @13',
+      'category': 'Music',
+      'viewers': '489',
+      'image': 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=500',
+      'flag': '🇪🇹',
+    },
+    {
+      'name': 'አፄንት ዘዘዘ',
+      'category': 'TOP 10 Hourly',
+      'viewers': '4.4K',
+      'image': 'https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=500',
+      'flag': '🇪🇹',
+    },
+  ];
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: 4, vsync: this);
+    _tabController.addListener(() {
+      if (_tabController.index == 3) {
+        // Nearby ሲመረጥ የሎኬሽን ፍቃድ ጥያቄ ፖፕ-አፕ ማሳየት
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          _showLocationPermissionDialog();
+        });
+      }
+    });
+  }
+
+  void _showLocationPermissionDialog() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: const Color(0xFF1a1a2e),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        title: const Text('Requesting location access', style: TextStyle(color: Colors.white, fontSize: 16)),
+        content: const Text('You can find streamers near you', style: TextStyle(color: Colors.white70, fontSize: 13)),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Cancel', style: TextStyle(color: Colors.grey)),
+          ),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(backgroundColor: Colors.amber),
+            onPressed: () {
+              Navigator.pop(context);
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Location Access Granted!')),
+              );
+            },
+            child: const Text('Open', style: TextStyle(color: Colors.black)),
+          ),
+        ],
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: const Color(0xFF12121f),
+      appBar: AppBar(
+        backgroundColor: const Color(0xFF1a1a2e),
+        elevation: 0,
+        title: TabBar(
+          controller: _tabController,
+          isScrollable: true,
+          labelColor: Colors.amberAccent,
+          unselectedLabelColor: Colors.white60,
+          indicatorColor: Colors.amberAccent,
+          indicatorWeight: 3,
+          tabs: const [
+            Tab(text: 'Explore'),
+            Tab(text: 'For You'),
+            Tab(text: 'New'),
+            Tab(text: 'Nearby'),
+          ],
+        ),
+        actions: [
+          IconButton(icon: const Icon(Icons.search, color: Colors.white), onPressed: () {}),
+          IconButton(icon: const Icon(Icons.emoji_events, color: Colors.amberAccent), onPressed: () {}),
+        ],
+      ),
+      body: Column(
+        children: [
+          // አግድም የሀገር ባንዲራዎች ማጣሪያ (Horizontal Country Flags Selector)
+          Container(
+            height: 60,
+            padding: const EdgeInsets.symmetric(vertical: 10),
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: countries.length,
+              itemBuilder: (context, index) {
+                bool isSelected = _selectedCountryIndex == index;
+                return Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 6.0),
+                  child: ChoiceChip(
+                    avatar: Text(countries[index]['flag']!),
+                    label: Text(countries[index]['name']!),
+                    selected: isSelected,
+                    selectedColor: Colors.amber,
+                    backgroundColor: Colors.white12,
+                    labelStyle: TextStyle(
+                      color: isSelected ? Colors.black : Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    onSelected: (bool selected) {
+                      setState(() {
+                        _selectedCountryIndex = index;
+                      });
+                    },
+                  ),
+                );
+              },
+            ),
+          ),
+
+          // የላይቭ ሩሞች ግሪድ (Grid View of Live Streams)
+          Expanded(
+            child: GridView.builder(
+              padding: const EdgeInsets.all(12),
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                crossAxisSpacing: 12,
+                mainAxisSpacing: 12,
+                childAspectRatio: 0.75,
+              ),
+              itemCount: liveStreams.length,
+              itemBuilder: (context, index) {
+                final stream = liveStreams[index];
+                return Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(16),
+                    image: DecorationImage(
+                      image: NetworkImage(stream['image']),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(16),
+                      gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                          Colors.transparent,
+                          Colors.black.withOpacity(0.8),
+                        ],
+                      ),
+                    ),
+                    padding: const EdgeInsets.all(10),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                          decoration: BoxDecoration(
+                            color: Colors.black45,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Text(
+                            stream['category'],
+                            style: const TextStyle(color: Colors.amberAccent, fontSize: 10, fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              stream['name'],
+                              style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 13),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            const SizedBox(height: 4),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(stream['flag'], style: const TextStyle(fontSize: 12)),
+                                Container(
+                                  padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                                  decoration: BoxDecoration(
+                                    color: Colors.black54,
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  child: Text(
+                                    '📊 ${stream['viewers']}',
+                                    style: const TextStyle(color: Colors.white70, fontSize: 10),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+        ],
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: const Color(0xFF1a1a2e),
+        selectedItemColor: Colors.amberAccent,
+        unselectedItemColor: Colors.white60,
+        type: BottomNavigationBarType.fixed,
+        items: const [
+          BottomNavigationBarItem(icon: Icon(Icons.live_tv), label: 'Live'),
+          BottomNavigationBarItem(icon: Icon(Icons.monetization_on), label: 'Gifts'),
+          BottomNavigationBarItem(icon: Icon(Icons.public), label: 'Explore'),
+          BottomNavigationBarItem(icon: Icon(Icons.chat_bubble), label: 'Chats'),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
+        ],
       ),
     );
   }
