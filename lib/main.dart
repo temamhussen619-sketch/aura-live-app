@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -21,247 +20,196 @@ class AuraLiveApp extends StatelessWidget {
   }
 }
 
-class WelcomeLoginPage extends StatefulWidget {
+class WelcomeLoginPage extends StatelessWidget {
   const WelcomeLoginPage({Key? key}) : super(key: key);
-
-  @override
-  _WelcomeLoginPageState createState() => _WelcomeLoginPageState();
-}
-
-class _WelcomeLoginPageState extends State<WelcomeLoginPage> {
-  // የጀርባ ጥራት ያላቸው ፎቶዎች (Background Slideshow Images)
-  final List<String> _bgImages = [
-    'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=1000&q=80',
-    'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=1000&q=80',
-    'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=1000&q=80',
-  ];
-  int _currentIndex = 0;
-  late Timer _timer;
-
-  @override
-  void initState() {
-    super.initState();
-    _timer = Timer.periodic(const Duration(seconds: 4), (timer) {
-      if (mounted) {
-        setState(() {
-          _currentIndex = (_currentIndex + 1) % _bgImages.length;
-        });
-      }
-    });
-  }
-
-  @override
-  void dispose() {
-    _timer.cancel();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: [
-          // 1. የጀርባ ተለዋዋጭ ፎቶዎች (Dynamic Background Slideshow)
-          Positioned.fill(
-            child: AnimatedSwitcher(
-              duration: const Duration(milliseconds: 1000),
-              child: Image.network(
-                _bgImages[_currentIndex],
-                key: ValueKey<int>(_currentIndex),
-                fit: BoxFit.cover,
-                width: double.infinity,
-                height: double.infinity,
-                loadingBuilder: (context, child, loadingProgress) {
-                  if (loadingProgress == null) return child;
-                  return Container(
-                    color: Colors.black,
-                    child: const Center(
-                      child: CircularProgressIndicator(color: Colors.amber),
-                    ),
-                  );
-                },
-                errorBuilder: (context, error, stackTrace) {
-                  return Container(
-                    color: Colors.black87,
-                    child: const Center(
-                      child: Icon(Icons.broken_image, color: Colors.white54, size: 50),
-                    ),
-                  );
-                },
-              ),
-            ),
+      body: Container(
+        decoration: const BoxDecoration(
+          // የላይቭ አፕ የሉክ የጸዳ ውብ ጥቁር እና ወርቃማ ከለር ድብልቅ (Luxury Dark & Gold Gradient)
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              Color(0xFF1a1a2e),
+              Color(0xFF16213e),
+              Color(0xFF0f0f1a),
+            ],
           ),
-
-          // የጥላ ከለር (Dark/Gold Gradient Overlay)
-          Positioned.fill(
-            child: Container(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                    Colors.black.withOpacity(0.35),
-                    Colors.black.withOpacity(0.75),
-                  ],
-                ),
-              ),
-            ),
-          ),
-
-          // 2. ዋናው ይዘት
-          SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // ከላይ በግራ በኩል ያለው ሎጎ እና ስም (Aura Logo & Title)
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: [
-                          Container(
-                            padding: const EdgeInsets.all(8),
-                            decoration: BoxDecoration(
-                              gradient: const LinearGradient(
-                                colors: [Colors.amber, Colors.orangeAccent, Colors.yellow],
-                                begin: Alignment.topLeft,
-                                end: Alignment.bottomRight,
+        ),
+        child: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // ከላይ በግራ በኩል ያለው ሎጎ እና ስም (Aura Logo & Title)
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.all(8),
+                          decoration: BoxDecoration(
+                            gradient: const LinearGradient(
+                              colors: [Colors.amber, Colors.orangeAccent, Colors.yellow],
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                            ),
+                            shape: BoxShape.circle,
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.amber.withOpacity(0.6),
+                                blurRadius: 12,
+                                spreadRadius: 3,
+                                offset: const Offset(0, 2),
                               ),
-                              shape: BoxShape.circle,
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.amber.withOpacity(0.6),
-                                  blurRadius: 10,
-                                  spreadRadius: 2,
-                                  offset: const Offset(0, 2),
-                                ),
-                              ],
-                              border: Border.all(color: Colors.white, width: 1.5),
-                            ),
-                            child: const Stack(
-                              alignment: Alignment.center,
-                              children: [
-                                Icon(Icons.monetization_on, color: Colors.white, size: 22),
-                                Positioned(
-                                  right: 0,
-                                  top: 0,
-                                  child: Icon(Icons.star, color: Colors.yellowAccent, size: 10),
-                                ),
-                              ],
-                            ),
+                            ],
+                            border: Border.all(color: Colors.white, width: 1.5),
                           ),
-                          const SizedBox(width: 12),
-                          const Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                          child: const Stack(
+                            alignment: Alignment.center,
                             children: [
-                              Text(
-                                'AURA LIVE',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                  letterSpacing: 1.2,
-                                ),
-                              ),
-                              Text(
-                                'Party, Dollar & Shine',
-                                style: TextStyle(
-                                  color: Colors.amberAccent,
-                                  fontSize: 10,
-                                  fontWeight: FontWeight.w500,
-                                ),
+                              Icon(Icons.monetization_on, color: Colors.white, size: 22),
+                              Positioned(
+                                right: 0,
+                                top: 0,
+                                child: Icon(Icons.star, color: Colors.yellowAccent, size: 10),
                               ),
                             ],
                           ),
-                        ],
-                      ),
-                      const Row(
-                        children: [
-                          Icon(Icons.person_outline, color: Colors.white70),
-                          SizedBox(width: 16),
-                          Icon(Icons.headset_mic, color: Colors.white70),
-                        ],
-                      ),
-                    ],
-                  ),
-
-                  const Spacer(),
-
-                  // 3. የማህበራዊ ሚዲያ መግቢያ ቁልፎች (Social Logins)
-                  _buildSocialButton(
-                    icon: Icons.g_mobiledata,
-                    iconColor: Colors.red,
-                    text: 'Log in with Google',
-                    onPressed: () {},
-                  ),
-                  const SizedBox(height: 14),
-                  _buildSocialButton(
-                    icon: Icons.facebook,
-                    iconColor: Colors.blue,
-                    text: 'Log in with Facebook',
-                    onPressed: () {},
-                  ),
-                  const SizedBox(height: 14),
-                  _buildSocialButton(
-                    icon: Icons.camera_alt,
-                    iconColor: Colors.purple,
-                    text: 'Log in with Instagram',
-                    onPressed: () {},
-                  ),
-
-                  const SizedBox(height: 24),
-
-                  // ተጨማሪ መግቢያ መንገዶች (More Login Methods)
-                  const Row(
-                    children: [
-                      Expanded(child: Divider(color: Colors.white54)),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 12),
-                        child: Text(
-                          'More Login Methods',
-                          style: TextStyle(color: Colors.white70, fontSize: 12),
                         ),
+                        const SizedBox(width: 12),
+                        const Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'AURA LIVE',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                letterSpacing: 1.2,
+                              ),
+                            ),
+                            Text(
+                              'Party, Dollar & Shine',
+                              style: TextStyle(
+                                color: Colors.amberAccent,
+                                fontSize: 10,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                    const Row(
+                      children: [
+                        Icon(Icons.person_outline, color: Colors.white70),
+                        SizedBox(width: 16),
+                        Icon(Icons.headset_mic, color: Colors.white70),
+                      ],
+                    ),
+                  ],
+                ),
+
+                const Spacer(),
+
+                // መካከለኛ ተጨማሪ የውበት ስዕል ወይም ምልክት
+                Center(
+                  child: Container(
+                    padding: const EdgeInsets.all(20),
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Colors.amber.withOpacity(0.1),
+                      border: Border.all(color: Colors.amber.withOpacity(0.3), width: 1.5),
+                    ),
+                    child: const Icon(
+                      Icons.star_rounded,
+                      size: 60,
+                      color: Colors.amberAccent,
+                    ),
+                  ),
+                ),
+
+                const Spacer(),
+
+                // የማህበራዊ ሚዲያ መግቢያ ቁልፎች (Social Logins)
+                _buildSocialButton(
+                  icon: Icons.g_mobiledata,
+                  iconColor: Colors.red,
+                  text: 'Log in with Google',
+                  onPressed: () {},
+                ),
+                const SizedBox(height: 14),
+                _buildSocialButton(
+                  icon: Icons.facebook,
+                  iconColor: Colors.blue,
+                  text: 'Log in with Facebook',
+                  onPressed: () {},
+                ),
+                const SizedBox(height: 14),
+                _buildSocialButton(
+                  icon: Icons.camera_alt,
+                  iconColor: Colors.purple,
+                  text: 'Log in with Instagram',
+                  onPressed: () {},
+                ),
+
+                const SizedBox(height: 24),
+
+                // ተጨማሪ መግቢያ መንገዶች (More Login Methods)
+                const Row(
+                  children: [
+                    Expanded(child: Divider(color: Colors.white54)),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 12),
+                      child: Text(
+                        'More Login Methods',
+                        style: TextStyle(color: Colors.white70, fontSize: 12),
                       ),
-                      Expanded(child: Divider(color: Colors.white54)),
-                    ],
-                  ),
+                    ),
+                    Expanded(child: Divider(color: Colors.white54)),
+                  ],
+                ),
 
-                  const SizedBox(height: 20),
+                const SizedBox(height: 20),
 
-                  // ከታች ያሉት አይኮኖች (Bottom Icons)
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      _buildBottomIcon(Icons.phone_android, () {}),
-                      const SizedBox(width: 30),
-                      _buildBottomIcon(Icons.person_outline, () {}),
-                      const SizedBox(width: 30),
-                      _buildBottomIcon(Icons.email_outlined, () {}),
-                    ],
-                  ),
+                // ከታች ያሉት አይኮኖች (Bottom Icons)
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    _buildBottomIcon(Icons.phone_android, () {}),
+                    const SizedBox(width: 30),
+                    _buildBottomIcon(Icons.person_outline, () {}),
+                    const SizedBox(width: 30),
+                    _buildBottomIcon(Icons.email_outlined, () {}),
+                  ],
+                ),
 
-                  const SizedBox(height: 20),
+                const SizedBox(height: 20),
 
-                  // የውል ስምምነት ማስታወሻ
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Icon(Icons.check_circle, color: Colors.amberAccent, size: 14),
-                      const SizedBox(width: 6),
-                      Text(
-                        'Logging in confirms you’re 18+ and agree to Terms',
-                        style: TextStyle(color: Colors.white.withOpacity(0.6), fontSize: 10),
-                        textAlign: TextAlign.center,
-                      ),
-                    ],
-                  ),
-                ],
-              ),
+                // የውል ስምምነት ማስታወሻ
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Icon(Icons.check_circle, color: Colors.amberAccent, size: 14),
+                    const SizedBox(width: 6),
+                    Text(
+                      'Logging in confirms you’re 18+ and agree to Terms',
+                      style: TextStyle(color: Colors.white.withOpacity(0.6), fontSize: 10),
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
+                ),
+              ],
             ),
           ),
-        ],
+        ),
       ),
     );
   }
