@@ -29,7 +29,7 @@ class WelcomeLoginPage extends StatefulWidget {
 }
 
 class _WelcomeLoginPageState extends State<WelcomeLoginPage> {
-  // የጀርባ ፎቶዎች (Background Slideshow Images)
+  // የጀርባ ጥራት ያላቸው ፎቶዎች (Background Slideshow Images)
   final List<String> _bgImages = [
     'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=1000&q=80',
     'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=1000&q=80',
@@ -42,9 +42,11 @@ class _WelcomeLoginPageState extends State<WelcomeLoginPage> {
   void initState() {
     super.initState();
     _timer = Timer.periodic(const Duration(seconds: 4), (timer) {
-      setState(() {
-        _currentIndex = (_currentIndex + 1) % _bgImages.length;
-      });
+      if (mounted) {
+        setState(() {
+          _currentIndex = (_currentIndex + 1) % _bgImages.length;
+        });
+      }
     });
   }
 
@@ -60,27 +62,48 @@ class _WelcomeLoginPageState extends State<WelcomeLoginPage> {
       body: Stack(
         children: [
           // 1. የጀርባ ተለዋዋጭ ፎቶዎች (Dynamic Background Slideshow)
-          AnimatedSwitcher(
-            duration: const Duration(milliseconds: 1000),
-            child: Image.network(
-              _bgImages[_currentIndex],
-              key: ValueKey<int>(_currentIndex),
-              fit: BoxFit.cover,
-              width: double.infinity,
-              height: double.infinity,
+          Positioned.fill(
+            child: AnimatedSwitcher(
+              duration: const Duration(milliseconds: 1000),
+              child: Image.network(
+                _bgImages[_currentIndex],
+                key: ValueKey<int>(_currentIndex),
+                fit: BoxFit.cover,
+                width: double.infinity,
+                height: double.infinity,
+                loadingBuilder: (context, child, loadingProgress) {
+                  if (loadingProgress == null) return child;
+                  return Container(
+                    color: Colors.black,
+                    child: const Center(
+                      child: CircularProgressIndicator(color: Colors.amber),
+                    ),
+                  );
+                },
+                errorBuilder: (context, error, stackTrace) {
+                  return Container(
+                    color: Colors.black87,
+                    child: const Center(
+                      child: Icon(Icons.broken_image, color: Colors.white54, size: 50),
+                    ),
+                  );
+                },
+              ),
             ),
           ),
 
           // የጥላ ከለር (Dark/Gold Gradient Overlay)
-          Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [
-                  Colors.black.withOpacity(0.3),
-                  Colors.black.withOpacity(0.75),
-                ],
+          Positioned.fill(
+            child: Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    Colors.black.withOpacity(0.35),
+                    Colors.black.withOpacity(0.75),
+                  ],
+                ),
               ),
             ),
           ),
@@ -98,7 +121,6 @@ class _WelcomeLoginPageState extends State<WelcomeLoginPage> {
                     children: [
                       Row(
                         children: [
-                          // የዶላር እና ወርቃማ ከለር ሎጎ
                           Container(
                             padding: const EdgeInsets.all(8),
                             decoration: BoxDecoration(
