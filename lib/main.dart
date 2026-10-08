@@ -1,8 +1,6 @@
-
-
-
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:camera/camera.dart';
 import 'dart:io';
 
 void main() {
@@ -236,7 +234,6 @@ class _WelcomeLoginPageState extends State<WelcomeLoginPage> {
                     ),
                   ),
                   const Spacer(),
-                  // የ AURA LIVE ሎጎ እና ስም
                   Row(
                     children: [
                       Container(
@@ -770,8 +767,8 @@ class _LiveExplorePageState extends State<LiveExplorePage> with SingleTickerProv
   }
 }
 
-// 4. የላይቭ ሩም ገጽ (Live Streaming Room Page)
-class LiveRoomPage extends StatelessWidget {
+// 4. የተስተካከለው የላይቭ ሩም ገጽ በእውነተኛ ካሜራ (Live Streaming Room Page with Real Camera)
+class LiveRoomPage extends StatefulWidget {
   final String hostName;
   final String hostImage;
   final String category;
@@ -784,12 +781,67 @@ class LiveRoomPage extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  State<LiveRoomPage> createState() => _LiveRoomPageState();
+}
+
+class _LiveRoomPageState extends State<LiveRoomPage> {
+  CameraController? _cameraController;
+  bool _isCameraInitialized = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _initializeCamera();
+  }
+
+  Future<void> _initializeCamera() async {
+    try {
+      final cameras = await availableCameras();
+      if (cameras.isNotEmpty) {
+        final frontCamera = cameras.firstWhere(
+          (camera) => camera.lensDirection == CameraLensDirection.front,
+          orElse: () => cameras.first,
+        );
+
+        _cameraController = CameraController(
+          frontCamera,
+          ResolutionPreset.medium,
+          enableAudio: true,
+        );
+
+        await _cameraController!.initialize();
+        if (mounted) {
+          setState(() {
+            _isCameraInitialized = true;
+          });
+        }
+      }
+    } catch (e) {
+      debugPrint('Camera initialization error: $e');
+    }
+  }
+
+  @override
+  void dispose() {
+    _cameraController?.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
         children: [
+          // እውነተኛው የካሜራ ስርጭት ማሳያ (Real Camera Preview)
           Positioned.fill(
-            child: Image.network(hostImage, fit: BoxFit.cover),
+            child: _isCameraInitialized && _cameraController != null
+                ? CameraPreview(_cameraController!)
+                : Container(
+                    color: Colors.black,
+                    child: const Center(
+                      child: CircularProgressIndicator(color: Colors.amberAccent),
+                    ),
+                  ),
           ),
           Positioned.fill(
             child: Container(
@@ -823,13 +875,13 @@ class LiveRoomPage extends StatelessWidget {
                         ),
                         child: Row(
                           children: [
-                            CircleAvatar(radius: 18, backgroundImage: NetworkImage(hostImage)),
+                            CircleAvatar(radius: 18, backgroundImage: NetworkImage(widget.hostImage)),
                             const SizedBox(width: 8),
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                Text(hostName, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 12)),
+                                Text(widget.hostName, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 12)),
                                 const Text('ID: 26948111', style: TextStyle(color: Colors.amberAccent, fontSize: 9)),
                               ],
                             ),
@@ -888,7 +940,7 @@ class LiveRoomPage extends StatelessWidget {
                             ),
                           ),
                           const SizedBox(width: 8),
-                          _buildRoomIcon(Icons.mic),
+                          _buildRoomIcon(Icons.flip_camera_ios),
                           const SizedBox(width: 8),
                           _buildRoomIcon(Icons.card_giftcard, color: Colors.amberAccent),
                           const SizedBox(width: 8),
@@ -914,10 +966,3 @@ class LiveRoomPage extends StatelessWidget {
     );
   }
 }
-
-
-
-
-
-
-
