@@ -3,7 +3,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:camera/camera.dart';
 import 'dart:io';
 
-Future<void> main() async {
+void main() {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(const AuraLiveApp());
 }
@@ -809,7 +809,7 @@ class _LiveRoomPageState extends State<LiveRoomPage> {
         }
       }
     } catch (e) {
-      debugPrint('Camera initialization error: $e');
+      debugPrint('Camera error: $e');
     }
   }
 
