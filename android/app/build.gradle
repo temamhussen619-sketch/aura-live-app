@@ -6,7 +6,8 @@ plugins {
 
 android {
     namespace "com.example.aura_live_app"
-    compileSdkVersion 33
+    compileSdkVersion flutter.compileSdkVersion
+    ndkVersion flutter.ndkVersion
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -20,7 +21,7 @@ android {
     defaultConfig {
         applicationId "com.example.aura_live_app"
         minSdkVersion 21
-        targetSdkVersion 33
+        targetSdkVersion flutter.targetSdkVersion
         versionCode 1
         versionName "1.0.0"
     }
