@@ -1,5 +1,5 @@
 name: aura_live_app
-description: A luxury, bright Poppo Live-inspired UI for Aura Live.
+description: A luxury live streaming app.
 publish_to: 'none'
 version: 1.0.0+1
 
@@ -9,8 +9,6 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  image_picker: ^1.0.7
-  camera: ^0.10.5+9
 
 dev_dependencies:
   flutter_test:
