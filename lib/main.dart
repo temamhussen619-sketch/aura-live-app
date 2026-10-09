@@ -91,7 +91,6 @@ class WelcomeLoginPage extends StatelessWidget {
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(26)),
                       ),
                       onPressed: () {
-                        // በቀጥታ ወደ ላይቭ ሩም (ካሜራ) ይወስዳል
                         Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
@@ -103,7 +102,7 @@ class WelcomeLoginPage extends StatelessWidget {
                           ),
                         );
                       },
-                      const Text(
+                      child: const Text(
                         'Start Live Test Now',
                         style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                       ),
